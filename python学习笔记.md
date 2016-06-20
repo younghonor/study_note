@@ -60,14 +60,14 @@ assert断言语句:
 
 #7.基本数据类型
 
-|整形| int| 1,2|   
-|----|---|----|  
-|浮点| float| 1.20|   
-|布尔| bool| b == True|      
-|字符串| str| 'str'或者"str"|    
-|列表| list| [1,2,4,5]|    
-|元组| tuple| ('d', 300)|    
-|字典| dirt| {'name':'coco','country':'china'}|    
+> |整形| int| 1,2|   
+> |----|---|----|  
+> |浮点| float| 1.20|   
+> |布尔| bool| b == True|      
+> |字符串| str| 'str'或者"str"|    
+> |列表| list| [1,2,4,5]|    
+> |元组| tuple| ('d', 300)|    
+> |字典| dirt| {'name':'coco','country':'china'}|    
 
 #8.pygame
 开发游戏软件很不错的库
