@@ -59,8 +59,9 @@ try...finally:
 assert断言语句:  
 
 #7.基本数据类型
+
+|整形| int| 1,2|   
 |----|---|----|  
-|整形| int| 1,2|  
 |浮点| float| 1.20|   
 |布尔| bool| b == True|      
 |字符串| str| 'str'或者"str"|    
