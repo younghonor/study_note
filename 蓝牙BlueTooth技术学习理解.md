@@ -1,3 +1,4 @@
+![bluetooth](http://i.imgur.com/QRDS3EC.jpg)
 ###1.BLUETOOTH基本了解
 1. BLUETOOTH出自丹麦  
 2. Bluetooth SIG 蓝牙技术联盟,非盈利组织.主要任务是发布蓝牙规格、管理资格认证程序、保护蓝牙商标及宣传蓝牙无线技术.
