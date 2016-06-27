@@ -100,8 +100,8 @@
 
 10. Ruby文件的一般开头格式  
 
-	> 	#! /usr/bin/ruby -w 
-	> 	# -*- coding: UTF-8 -*-
+	> 	#! /usr/bin/ruby -w   
+	> 	# -*- coding: UTF-8 -*-  
 
 11. Ruby运算符  
 	1. 操作运算符 +、-、*、/、%、**(乘方)  
