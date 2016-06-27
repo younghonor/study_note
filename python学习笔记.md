@@ -1,3 +1,5 @@
+![python](http://i.imgur.com/tH0gg27.jpg)  
+#python学习笔记  
 #1.关于#!/usr/bin/env python
 这只是告诉操作系统这个脚本的解释、执行程序的具体位置，加了这个头，在"X"类操作系统中就直接可以这样执行脚本了“hello.py”,否则的话就得这样执行“python hello.py”.
 区别：  
