@@ -33,23 +33,24 @@
 	Ruby中提供了 public、private、protected 三个方法访问限定符，可以对单个或批量的方法制定访问的限制条件。可以单独对单个方法进行访问限定，也可以使用批量的方式对多个方法使用访问限定。
     默认情况下，所有的方法都是 public ，除了 initialize 之外，它始终是一个 private 的方法。  
 
-
-> 	类
-> 	class ClassName  
-> 		def   
-> 		end  
-> 	end  
->
-> 	类的继承   
-> 	class People   
-> 	end  
-> 	class Male < People  
-> 	end 
-> 	 
-> 	模块的定义
-> 	module moduleName  
-> 	end  
-
+	```
+	#类
+	class ClassName  
+		def   
+		end  
+	end  
+	
+	#类的继承   
+	class People   
+	end  
+	class Male < People  
+	end 
+	 
+	#模块的定义
+	module moduleName  
+	end  
+	```   
+    
 	1. ruby中，你可以向已有类库中添加方法.  
 	2. ruby字符串处理类中是没有的，要是写的话 if(mystring != null && mystring != "")  这样是最普遍的表示方法了.
  
@@ -67,8 +68,8 @@
 	在Ruby代码一般都忽略空白字符，例如空格和制表符，除非当它们出现在字符串中。但是，有时它们被使用解释模棱两可的报表。诠释这种类型`-w`选项启用时产生警告。  
 6. Ruby程序行结尾
 	Ruby解释一个语句中以分号和换行符表示结束。但是，如果Ruby遇到运算符，如+，- 或反斜杠结尾的行，则表示语句继续.
-7. Ruby保留字
-	![ruby保留字](http://i.imgur.com/MYdgEt6.jpg)  
+7. Ruby保留字  
+	![ruby保留字](http://i.imgur.com/MYdgEt6.jpg)    
 8. Ruby中heredoc  
 	"Here Document" 是指建立多行字符串。继<<可以指定一个字符串或者一个标识符来终止字符串字面，当前行之后的所有行的终止符字符串的值.  
 	如果终止符是引用，引号的类型决定面向行的字符串常量的类型。注意<<终止符之间不能有空格.
