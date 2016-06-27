@@ -1,4 +1,5 @@
-
+![C](http://i.imgur.com/kvDV6sE.jpg)
+#C Language 进阶 
 ###1.非局部跳转语句---setjmp和longjmp函数
 特点  
 	非togo语句在函数内实施跳转,而是在栈上跳过若干调用帧,返回到当前函数调用路径上的某一语句.  

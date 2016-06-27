@@ -1,3 +1,4 @@
+![mips](http://i.imgur.com/oSmmt1X.jpg)
 #MIPS汇编
 
 ##MIPS指令集
