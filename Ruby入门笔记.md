@@ -52,7 +52,7 @@
 	```   
     
 	1. ruby中，你可以向已有类库中添加方法.  
-	2. ruby字符串处理类中是没有的，要是写的话 if(mystring != null && mystring != "")  这样是最普遍的表示方法了.
+	2. ruby字符串处理类中是没有的，要是写的话 `if(mystring != null && mystring != "")` 这样是最普遍的表示方法了.
  
 4. Ruby的变量名分类  
 	标识符是变量，常量及方法。 Ruby的标识符是区分大小写的。Ram和RAM在Ruby中是两个不同意思的标识符.    
@@ -73,25 +73,31 @@
 8. Ruby中heredoc  
 	"Here Document" 是指建立多行字符串。继<<可以指定一个字符串或者一个标识符来终止字符串字面，当前行之后的所有行的终止符字符串的值.  
 	如果终止符是引用，引号的类型决定面向行的字符串常量的类型。注意<<终止符之间不能有空格.
+
 	```  
-	print <<EOF   
-    This is the first way of creating  
-    here document ie. multiple line string.  
-	EOF  
-	```
+	print <<EOF     
+    This is the first way of creating    
+    here document ie. multiple line string.    
+	EOF    
+	```  
+
 9. Ruby BEGIN/END 语句   
 	声明代码在程序运行之前被调用.  
+
 	```
 	BEGIN {
    		code
 	}
 	```
+
 	声明代码被称为程序的结束. 
+
 	```
 	END {
    		code
 	}
 	```
+
 10. Ruby文件的一般开头格式  
 
 	> 	#! /usr/bin/ruby -w 
@@ -112,40 +118,55 @@
 > 
 
  	1. 条件语句  
- 
-> 	if condition then...  
-> 	elsif condition then...  
-> 	else...  
-> 	end    
-> 	   
-> 	unless condition then...  
-> 	else...  
-> 	end    
- 
+
+	``` 
+	if condition then...    
+	elsif condition then...    
+	else...    
+	end      
+	```  
+
+	```     
+	unless condition then...    
+	else...    
+	end      
+	```  
+
 	2. 分支判断  
 
-> 	case condition  
-> 	when value1 then...  
-> 	when value2 then...   
-> 	else...  
-> 	end  
+	```
+	case condition  
+	when value1 then...  
+	when value2 then...   
+	else...  
+	end  
+	```
 
 	3. 循环控制  
 
 	循环控制语句用在我们希望重复执行一些动作时，使用循环控制语句，需要注意两个要点： 一个是循环的条件、一个是循环的次数.    
 	Ruby中提供了for、while、until三个循环控制语句，each、times、loop三个循环控制方法，我们可以根据需要选择不同的方式.  
 
-> 	while condition do...  
-> 	end
-> 
-> 	for var in object do...  
-> 	end
-> 
-> 	until condition do...  
-> 	end
-> 
-> 	obj.each{|var|, block}  
-> 
-> 	loop{...}   
+	```  
+	while condition do...  
+	end
+	```  
+	
+	```  
+	for var in object do...  
+	end
+	```  
 
+	```  
+	until condition do...  
+	end
+	```  
+
+	```  
+	obj.each{|var|, block}  
+	```  
+	
+	```  
+	loop{...}   
+	```  
  
