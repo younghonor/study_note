@@ -6,14 +6,17 @@
 ####中层：   
 1. 与处理器无关代码  
 ![与处理器类型无关的代码](http://i.imgur.com/gRRD1mK.jpg)  
-2. 与应用程序相关配置文件  
-![与应用程序有关](http://i.imgur.com/EXWlGwx.jpg)   
-3. 与处理器有关代码  
-![与处理器有关的代码](http://i.imgur.com/cYTFXjB.jpg)  
+2. 与应用程序相关配置文件    
+![与应用程序有关](http://i.imgur.com/EXWlGwx.jpg)     
+3. 与处理器有关代码    
+![与处理器有关的代码](http://i.imgur.com/cYTFXjB.jpg)   
+ 
 ####下层：
-硬件(cpu,interupt,timer,gpio,iis...)
-##内核结构
-####核心功能函数
+硬件(cpu,interupt,timer,gpio,iis...)  
+
+##内核结构  
+####核心功能函数  
+```
 OS_ENTER_CRITICAL()/OS_EXIT_CRITICAL()  开中断/关中断  
 OSInit()  
 OSStart()  
@@ -21,8 +24,9 @@ OSIntEnter()
 OSIntExit()  
 OSSchedLock()/Unlock()  
 OSVersion()  
-####重要结构体  
-####临界段  
+```
+####重要结构体    
+####临界段    
 处理器处理临界代码都必须先关中断，再处理临界代码，然后再开中断。关中断时间对实时系统的实时响应很重要。所以是实时系统的一个很重要的指标。uCOS使用两个宏（在OS_CPU.h中定义。注：没个CPU都有自己的OS_CPU.h）。这两个宏分别为OS_ENTER_CRITICAL()和OS_EXIT_CRITICAL()关闭中断和打开中断. 列:  
 
 ```      
