@@ -38,26 +38,35 @@ void function(void)
 > 通常任务是一个无限循环。函数没有返回值。任务完成以后可以自我删除。(注意：删除不是任务代码删除了，只是这个任务不会再执行了；即使调用了OSTaskDel()这个任务也不会有返回值).    
 
 ####任务创建: 
-	可以使用`OSTaskCreat()`或者`OSTaskCreatExt()`创建.uCOS II 可以管理的任务可以达到64个，但是建议不要使用前四个优先级的任务和后四个优先级的任务.   
-     
+可以使用`OSTaskCreat()`或者`OSTaskCreatExt()`创建.uCOS II 可以管理的任务可以达到64个，但是建议不要使用前四个优先级的任务和后四个优先级的任务.   
+![main](http://i.imgur.com/MxxJVmB.jpg)
+这里`OSTaskCreate`创建了一个任务`TeskTask1`,传给任务的参数为空`(void *)0`,栈顶地址为&TaskStartStk[TASK_STK_SIZE - 1],优先级为0,创建第一个任务前需要先初始化系统`OSInit()`,创建完任务后就可以调用OSStart()开始多任务.  
+![firsttast](http://i.imgur.com/TSuQkIz.jpg)  
+`TeskTask1`首先初始化统计任务,然后依次创建三个任务:TestTask2,TestTask3,TestTask4.然后进入while循环.任务永远不会退出,但可以通过`OSTimeDly`或者`OSTaskSuspend`挂起.
 ####任务状态：  
-
 	1. 睡眠: 驻留在ROM或者RAM中，系统还没有管理，只有通过`OSTaskCreat()`或`OSCreatExt()`创建之后才能使得系统管理任务.  
 	2. 就绪: 任务一旦建立就进入了就绪态，等待运行.  
 	3. 等待: 可以调用`OSTimeDel()`或者`OSTimeDlyHMSM()`使得任务进入等待状态。一直等待函数中定义的延时时间到了，这两个函数会强制执行任务转换，让下一个优先级更高的任务进入就绪态的任务运行.  
 	4. 运行: 当前任务正在执行.
 	5. 中断: 当前正在执行的任务被中断，进入中断服务态，响应中断时该任务被挂起。中断服务子程序占有了CPU的使用权.  
 
-####任务控制块(TCB)：
-	重要的数据结构,一旦任务建立了，任务控制块OS­­_TCB将被赋值，ucosii用它保存任务的状态，用来恢复任务. 任务建立的时候，OS­­_TCBs就被初始化了. 关键的结构体变量:
-		1. OSTCBStkPtr: 当前任务栈顶的指针.是OS_TCB数据结构中唯一的一个能用汇编语言来处置的变量（在任务切换段的代码中）,把OSTCBStkPtr放在数据结构的最前面，使得从汇编语言中处理这个变量时较为容易.  
-		2. OSTCBExtPtr: 指向用户定义的任务控制块扩展.用户可以扩展任务控制块而不必修改μC/OS-Ⅱ的源代码.  
-		3. OSTCBStkBottom: 指向任务栈底的指针.函数`OSTaskStkChk()`(用于堆栈检验)要用到变量OSTCBStkBottom,在运行中检验栈空间的使用情况。用户可以用它来确定任务实际需要的栈空间.这个功能只有当用户在任务建立时允许使用`OSTaskCreateExt()`函数时才能实现。这就要求用户将`OS_TASK_CREATE_EXT_EN`设为1以便允许该功能. 
-		4. OSTCBStkSize: 存有栈中可容纳的指针元数目，而不是用字节表示的栈容量总数.
+####任务控制块(TCB)：  
+
+重要的数据结构,一旦任务建立了，任务控制块`OS­­_TCB`将被赋值，`ucosii`用它保存任务的状态，用来恢复任务. 任务建立的时候，`OS­­_TCBs`就被初始化了. 关键的结构体变量:  
+	1. **OSTCBStkPtr**: 当前任务栈顶的指针.是OS_TCB数据结构中唯一的一个能用汇编语言来处置的变量（在任务切换段的代码中）,把`OSTCBStkPtr`放在数据结构的最前面，使得从汇编语言中处理这个变量时较为容易.  
+	2. **OSTCBExtPtr**: 指向用户定义的任务控制块扩展.用户可以扩展任务控制块而不必修改μC/OS-Ⅱ的源代码.  
+	3. **OSTCBStkBottom**: 指向任务栈底的指针.函数`OSTaskStkChk()`(用于堆栈检验)要用到变量`OSTCBStkBottom`,在运行中检验栈空间的使用情况。用户可以用它来确定任务实际需要的栈空间.这个功能只有当用户在任务建立时允许使用`OSTaskCreateExt()`函数时才能实现。这就要求用户将`OS_TASK_CREATE_EXT_EN`设为1以便允许该功能.   
+	4. **OSTCBStkSize**: 存有栈中可容纳的指针元数目，而不是用字节表示的栈容量总数.
 
 ####任务就绪表：  
-	每个就绪的任务都放在任务就绪表中。就绪表中有两个变量，OSRdyGrp和OSRdyTbl[],在OSRdyGrp中任务按照优先级分组，8个任务为一组。OSRdyGrp中的每位表示8组任务中每一组是否有进入就绪态的任务,任务就绪，OSRdyTbl[]中相应元素中的相应位也被置1.OSRdyTbl[]数组有多大取决于OS_LOWSET_PRIO.当应用程序的数目比较少的时候可以降低OS_LOWSET_PRIO，可以降低系统对RAM（数据空间）的需求. 
-			
+![优先级判定表](http://i.imgur.com/hiaJPq9.jpg)  
+每个就绪的任务都放在任务就绪表中。就绪表中有两个变量，`OSRdyGrp`和`OSRdyTbl[OS_RDY_TBL_SIZE]`,在`OSRdyGrp`中任务按照优先级分组，8个任务为一组。`OSRdyGrp`中的每位表示8组任务中每一组是否有进入就绪态的任务,任务就绪，`OSRdyTbl[OS_RDY_TBL_SIZE]`中相应元素中的相应位也被置1.`OSRdyTbl[OS_RDY_TBL_SIZE]`数组有多大取决于`OS_LOWSET_PRIO`.当应用程序的数目比较少的时候可以降低`OS_LOWSET_PRIO`，可以降低系统对RAM（数据空间）的需求. 
+就绪表的定义如下,大小由最低优先级确定.  
+![readytable](http://i.imgur.com/lyEmT0B.jpg)  
+系统通过OSRdyGrp和OSRdyTbl[OSUnMapTbl[OSRdyGrp]]来确定就绪表中的最高优先级任务.  
+![111](http://i.imgur.com/mZ5Ench.jpg)	
+优先级判定表OSUnMapTbl[]定义如下:  
+![unmap](http://i.imgur.com/XclwnIs.jpg)	
 ####任务调度:  
 	根据任务优先级,UCOS总是让就绪表中任务优先级最高的任务先执行.
 	任务的调度由函数：OSSched()完成。中断级的调用由另一个函数：OSIntExt()完成。  
@@ -82,7 +91,7 @@ void function(void)
 	OSInit();//ucos的初始化,空闲任务，统计任务，系统变量及数据结构         
 	OSStart();//ucos的启动,必须建立一个任物  
 	`
-##任务管理
+
 ##时间管理
 时间管理的内容在代码`os_time.c`中，包含操作系统时间的设置及获取，对任务的延时，任务按分秒延时，取消任务的延时共5个系统调用。时间管理的最主要功能就是对任务进行延时。
 时间管理中最重要的数据结构就是全局变量OSTime，OSTime的值就是操作系统的时间，它的定义在uC/OS-II的头文件ucos_ii.h中:    
