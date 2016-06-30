@@ -110,7 +110,7 @@
 	4. 位运算符   &、|、~、^、>>、<<  
 
 12. Ruby中的真值与假值  
-	Ruby中，在进行判断时，false 和 nil 都为假，除此以外的所有值为真。nil 是一个特殊值，用于在正则表达式中表示没有找到匹配的内容。也就是说，0 在ruby中也是真值.  
+	Ruby中，在进行判断时，false 和 nil 都为假，除此以外的所有值为真。nil 是一个特殊值，用于在正则表达式中表示没有找到匹配的内容。也就是说，**0 在ruby中也是真值**.  
 13. Ruby中的Symbol  
 	在Ruby中Symbol表示“名字”，比如字符串的名字、标识符的名字，创建一个Symbol对象的方法是在名字或者字符串之前加上":".  
 14. Ruby控制语句  
@@ -145,7 +145,7 @@
 	3. 循环控制  
 
 	循环控制语句用在我们希望重复执行一些动作时，使用循环控制语句，需要注意两个要点： 一个是循环的条件、一个是循环的次数.    
-	Ruby中提供了for、while、until三个循环控制语句，each、times、loop三个循环控制方法，我们可以根据需要选择不同的方式.  
+	Ruby中提供了for、while、until三个循环控制语句，each、times、loop三个循环控制方法，我们可以根据需要选择不同的方式.Ruby同时提供了三个循环控制的语句，包括：break、next、redo.  
 
 	```  
 	while condition do...  
@@ -169,4 +169,62 @@
 	```  
 	loop{...}   
 	```  
- 
+ 15. Ruby中常用的类
+
+	1. Numeric类  
+	2. Array类  
+		数组的创建有多种方式：
+		1. 使用 []。
+		2. 使用 Array.new
+		3. 类似于Perl的数组创建方式，使用%w进行创建。
+		4. 使用 obj.to_a 方法，将对象转换为数组。
+		5. 使用split方法，将字符串分割为数组。
+
+
+	3. String类  
+		String的创建方式有:  
+		1. 直接使用"或者'新建
+     	2. String.new新建
+     	3. 使用%Q和%q的方式新建
+
+
+	4. Hash类  
+	5. 正则表达式类（Regexp）  
+	6. IO类  
+		IO是每个程序语言必不可少的部分，通常IO有三个，标准输入、标准输出、错误输出。
+		对于Console来说，Ruby中使用$stdin、$stdout、$stderr来表示。
+		文件IO是我们平时编程中最常用到的一种。
+		Ruby和其他语言一样，提供了open、close、seek、popen、gets、readline、read等函数,
+		来帮助我们完成文件的读取、修改、保存操作。
+	7. File和Dir类  
+	8. Time、Date、DateTime类  
+	9. Ruby中的进程与线程  
+
+
+16. 错误与例外处理
+
+错误处理的一般形式:  
+
+```//ruby  
+	begine
+
+          block
+
+     rescue=> ex #rescue遇到例外时进行错误处理
+
+          print ex.message
+
+          block
+
+     ensure #ensure确保不管在什么情况下它下面的代码部分都会执行
+
+          block
+
+          retry #retry 重新尝试从 begin 开始的代码
+
+     end
+```
+
+默认情况下 $!返回例外对象，$@返回例外信息.    
+Ruby 提供了catch throw 的语法，但是这个和其他语言貌似区别很大.    
+Ruby提供了一个标准的例外类，其下有众多的子类来表示不同的例外情况.    
