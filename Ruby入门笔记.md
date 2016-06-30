@@ -205,7 +205,7 @@
 
 错误处理的一般形式:  
 
-```//ruby  
+```ruby  
 	begine
 
           block
