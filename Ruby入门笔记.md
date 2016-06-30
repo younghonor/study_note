@@ -33,7 +33,7 @@
 	Ruby中提供了 public、private、protected 三个方法访问限定符，可以对单个或批量的方法制定访问的限制条件。可以单独对单个方法进行访问限定，也可以使用批量的方式对多个方法使用访问限定。
     默认情况下，所有的方法都是 public ，除了 initialize 之外，它始终是一个 private 的方法。  
 
-	```ruby  
+```ruby  
 	#类
 	class ClassName  
 		def   
@@ -49,7 +49,7 @@
 	#模块的定义
 	module moduleName  
 	end  
-	```   
+```   
     
 	1. ruby中，你可以向已有类库中添加方法.  
 	2. ruby字符串处理类中是没有的，要是写的话 `if(mystring != null && mystring != "")` 这样是最普遍的表示方法了.
@@ -74,29 +74,29 @@
 	"Here Document" 是指建立多行字符串。继<<可以指定一个字符串或者一个标识符来终止字符串字面，当前行之后的所有行的终止符字符串的值.  
 	如果终止符是引用，引号的类型决定面向行的字符串常量的类型。注意<<终止符之间不能有空格.
 
-	```ruby    
+```ruby    
 	print <<EOF     
     This is the first way of creating    
     here document ie. multiple line string.    
 	EOF    
-	```  
+```  
 
 9. Ruby BEGIN/END 语句   
 	声明代码在程序运行之前被调用.  
 
-	```ruby  
+```ruby  
 	BEGIN {
    		code
 	}
-	```
+```
 
 	声明代码被称为程序的结束. 
 
-	```ruby  
+```ruby  
 	END {
    		code
 	}
-	```
+```
 
 10. Ruby文件的一般开头格式  
 
@@ -119,56 +119,56 @@
 
  	1. 条件语句  
 
-	```ruby   
+```ruby   
 	if condition then...    
 	elsif condition then...    
 	else...    
 	end      
-	```  
+```  
 
-	```ruby       
+```ruby       
 	unless condition then...    
 	else...    
 	end      
-	```  
+```  
 
 	2. 分支判断  
 
-	```ruby  
+```ruby  
 	case condition  
 	when value1 then...  
 	when value2 then...   
 	else...  
 	end  
-	```
+```
 
 	3. 循环控制  
 
 	循环控制语句用在我们希望重复执行一些动作时，使用循环控制语句，需要注意两个要点： 一个是循环的条件、一个是循环的次数.    
 	Ruby中提供了for、while、until三个循环控制语句，each、times、loop三个循环控制方法，我们可以根据需要选择不同的方式.Ruby同时提供了三个循环控制的语句，包括：break、next、redo.  
 
-	```ruby    
+```ruby    
 	while condition do...  
 	end
-	```  
+```  
 	
-	```ruby    
+```ruby    
 	for var in object do...  
 	end
-	```  
+```  
 
-	```ruby    
+```ruby    
 	until condition do...  
 	end
-	```  
+```  
 
-	```ruby    
+```ruby    
 	obj.each{|var|, block}  
-	```  
+```  
 	
-	```ruby    
+```ruby    
 	loop{...}   
-	```  
+```  
  15. Ruby中常用的类
 
 	1. Numeric类  
