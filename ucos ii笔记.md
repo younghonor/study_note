@@ -20,7 +20,7 @@ ucos的内核机构可以从以下的代码可以看出,应用支持10个事件�
 ####临界段    
 处理器处理临界代码都必须先关中断，再处理临界代码，然后再开中断。关中断时间对实时系统的实时响应很重要。所以是实时系统的一个很重要的指标。uCOS使用两个宏（在OS_CPU.h中定义。注：没个CPU都有自己的OS_CPU.h）。这两个宏分别为OS_ENTER_CRITICAL()和OS_EXIT_CRITICAL()关闭中断和打开中断. 列:  
 
-```      
+```c      
 void function(void)
 
 {  
@@ -87,11 +87,11 @@ void function(void)
 ###时钟节拍
 提供周期性信号源，用于时间延迟和确认超时。
 ###流程
-    `
+```c
 	OSInit();//ucos的初始化,空闲任务，统计任务，系统变量及数据结构     
 	OSTaskCreate();//任务创建    
 	OSStart();//ucos的启动,必须建立一个任务  
-	`
+```
 
 ##时间管理
 ![time managment](http://i.imgur.com/xHhMr9i.jpg)  

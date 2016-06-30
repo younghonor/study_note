@@ -3,8 +3,10 @@
 ###1.非局部跳转语句---setjmp和longjmp函数
 特点  
 	非togo语句在函数内实施跳转,而是在栈上跳过若干调用帧,返回到当前函数调用路径上的某一语句.  
-	头文件包含#include<setjmp.h>.  
-    `Void longjmp(jmp_buf env,int val);`  
+	头文件包含#include<setjmp.h>.   
+```c 
+    Void longjmp(jmp_buf env,int val);  
+```
     返回值：若直接调用则返回0，若从longjmp调用返回则返回非0值  
 	注: setjmp参数evn的类型是一个特殊的类型jmp_buf,这一数据类型是某种形式的数组，其中存放在调用longjmp时能用来恢复栈状态的所有信息.因为需要在另一个函数中引用env变量，所以规范的处理方式是将env变量定义为全局变量。  
 	  
