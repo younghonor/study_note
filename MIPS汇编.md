@@ -1,10 +1,6 @@
 ![mips](http://i.imgur.com/oSmmt1X.jpg)
 #MIPS汇编
-<<<<<<< HEAD
- 
-=======
 
->>>>>>> e80f119987ead45dbe860bcee40575151bdc040d
 ##MIPS指令集
 >MIPS指令集属于精简指令集  
 >>MIPS的所有指令都是32位，指令格式简单，而X86的指令长度不是固定的。  
