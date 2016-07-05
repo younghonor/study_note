@@ -83,3 +83,12 @@ assert断言语句:
 
 #8.pygame
 开发游戏软件很不错的库
+#9.scrapy
+scrapy 是一个 python 下面功能丰富、使用快捷方便的爬虫框架。用 scrapy 可以快速的开发一个简单的爬虫.  
+![scrapy例子](http://i.imgur.com/JmZx6dV.jpg)  
+快速入门可以参考《Scrapy 从这里开始：Hello Scrapy》.  
+###scrapy安装
+安装步骤:[http://www.cnblogs.com/txw1958/archive/2012/07/12/scrapy_installation_introduce.html](http://www.cnblogs.com/txw1958/archive/2012/07/12/scrapy_installation_introduce.html "scrapy安装教程")  
+入门教程:[http://www.cnblogs.com/txw1958/archive/2012/07/16/scrapy-tutorial.html](http://www.cnblogs.com/txw1958/archive/2012/07/16/scrapy-tutorial.html "scrapy入门教程")  
+####注:scrapy当前还不支持python3.x 因此可以安装Python2.7.6.  
+2016/7/4 16:56:06 
