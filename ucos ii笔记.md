@@ -17,6 +17,7 @@
 ##内核结构  
 ucos的内核机构可以从以下的代码可以看出,应用支持10个事件控制块,5个事件标志组,5个内存区块,4个队列控制块和20个任务,最低优先级为63,任务堆栈大小都为128等等,这些都是可以在OS_CFG.H中自行定义的.  
 ![内核机构](http://i.imgur.com/U3OyYMI.jpg)  
+
 ####临界段    
 处理器处理临界代码都必须先关中断，再处理临界代码，然后再开中断。关中断时间对实时系统的实时响应很重要。所以是实时系统的一个很重要的指标。uCOS使用两个宏（在OS_CPU.h中定义。注：没个CPU都有自己的OS_CPU.h）。这两个宏分别为OS_ENTER_CRITICAL()和OS_EXIT_CRITICAL()关闭中断和打开中断. 列:  
 
@@ -33,6 +34,7 @@ void function(void)
 }
 ```  
 #####注:在ODTimeDel()之类的函数调用的时候不能关闭中断，不然应用程序会死机.  
+
 ###任务
 > 通常任务是一个无限循环。函数没有返回值。任务完成以后可以自我删除。(注意：删除不是任务代码删除了，只是这个任务不会再执行了；即使调用了OSTaskDel()这个任务也不会有返回值).    
 ![task managment](http://i.imgur.com/hYTmLwM.jpg)  
@@ -51,13 +53,12 @@ void function(void)
 	5. 中断: 当前正在执行的任务被中断，进入中断服务态，响应中断时该任务被挂起。中断服务子程序占有了CPU的使用权.  
 
 ####任务控制块(TCB)：  
-
+系统会根据`OS_MAX_TASKS + OS_N_SYS_TASKS`确定任务控制表OSTCBTbl[]的大小并初始化为空.
 重要的数据结构,一旦任务建立了，任务控制块`OS­­_TCB`将被赋值，`ucosii`用它保存任务的状态，用来恢复任务. 任务建立的时候，`OS­­_TCBs`就被初始化了. 关键的结构体变量:  
 	1. **OSTCBStkPtr**: 当前任务栈顶的指针.是OS_TCB数据结构中唯一的一个能用汇编语言来处置的变量（在任务切换段的代码中）,把`OSTCBStkPtr`放在数据结构的最前面，使得从汇编语言中处理这个变量时较为容易.  
 	2. **OSTCBExtPtr**: 指向用户定义的任务控制块扩展.用户可以扩展任务控制块而不必修改μC/OS-Ⅱ的源代码.  
 	3. **OSTCBStkBottom**: 指向任务栈底的指针.函数`OSTaskStkChk()`(用于堆栈检验)要用到变量`OSTCBStkBottom`,在运行中检验栈空间的使用情况。用户可以用它来确定任务实际需要的栈空间.这个功能只有当用户在任务建立时允许使用`OSTaskCreateExt()`函数时才能实现。这就要求用户将`OS_TASK_CREATE_EXT_EN`设为1以便允许该功能.   
 	4. **OSTCBStkSize**: 存有栈中可容纳的指针元数目，而不是用字节表示的栈容量总数.
-
 ####任务就绪表：  
 ![优先级判定表](http://i.imgur.com/hiaJPq9.jpg)  
 每个就绪的任务都放在任务就绪表中。就绪表中有两个变量，`OSRdyGrp`和`OSRdyTbl[OS_RDY_TBL_SIZE]`,在`OSRdyGrp`中任务按照优先级分组，8个任务为一组。`OSRdyGrp`中的每位表示8组任务中每一组是否有进入就绪态的任务,任务就绪，`OSRdyTbl[OS_RDY_TBL_SIZE]`中相应元素中的相应位也被置1.`OSRdyTbl[OS_RDY_TBL_SIZE]`数组有多大取决于`OS_LOWSET_PRIO`.当应用程序的数目比较少的时候可以降低`OS_LOWSET_PRIO`，可以降低系统对RAM（数据空间）的需求. 
@@ -124,9 +125,14 @@ void function(void)
 另外，还需要判断OSTCBStat的位3挂起标志。因为被挂起的任务必须用也只能用OSTaskResume来恢复。`OS_STAT_SUSPEND`的值是0x08，`ptcb->OSTCBStat&OS_STAT_SUSPEND`是将`STCBStat`的位3挂起标志位单独取出来了，判断它是不是0，如果是0，那么就不是被挂起的任务，否则就是被挂起的任务。对于挂起的任务只能处理到这里，对于其他的任务就开始对就绪表和就绪组进行处理，恢复任务到就绪态，然后执行任务调度。  
 
 ##事件管理
+####主要函数
+![事件管理函数](http://i.imgur.com/JL8ssZ0.jpg)  
+![事件控制块](http://i.imgur.com/5KAgDrr.png)  
+
 ####事件控制块结构体(UCOS_II.H)    
 ![事件控制块](http://i.imgur.com/r0LK15o.jpg)  
-
+![oseventfreelist](http://i.imgur.com/prqep95.jpg)  
+ucos系统默认定义了**OS_MAX_EVENTS**这么多个事件控制块，**OSEventFreeList**为一个单项链表。同TCB,此时初始化的控制块没有与任何的具体事件相关联。    
 ##信号量管理
 ####信号量数据结构  
 ![信号量数据结构](http://i.imgur.com/UfgWxxh.jpg)
