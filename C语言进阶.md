@@ -339,3 +339,103 @@ GCC提供了Statement-Expressions用以替代do{...}while(0)  ;
 当你的功能很复杂，变量很多你又不愿意增加一个函数的时候，使用do{}while(0);将你的代码写在里面，里面可以定义变量而不用考虑变量名会同函数之前或者之后的重复。
 
 转载自：http://www.spongeliu.com/415.html
+
+#6. (常用数据结构)程序控制块
+
+##1. 程序控制块
+从代码上看,程序控制块就是一个结构体.例如:  
+
+```c
+
+	typedef struct tcb{
+		char * tast_name; //任务名字
+		int    p; //任务重要级别
+		int    v_number; //版本号
+		void (*fun)(void); //指向存储任务代码空间地址
+	}TCB;
+```
+
+操作系统可以通过这个结构体控制与之相关联的代码,因此把这种结构叫做程序控制块.  
+例子:  
+```c
+
+	#include <stdio.h>
+	#include <string.h>
+
+	//TCB定义
+	typedef struct tcb{
+		char * task_name; //任务名字
+		int    p; //任务重要级别
+		int    v_number; //版本号
+		void (*fun)(void); //指向存储任务代码空间地址
+	}TCB;
+
+	//任务1
+	void Task1()
+	{
+		int i;
+		for (i=0; i<10; i++)
+			printf("1111111111\n");
+	}
+	
+	//任务2	
+	void Task2()
+	{
+		int i;
+		for (i=0; i<10; i++)
+			printf("222222222222\n");
+	}
+	//任务3	
+	void Task3()
+	{
+		int i;
+		for (i=0; i<10; i++)
+			printf("3333333333333\n");
+	}
+	//创建控制块函数
+	TCB GreatTCB(char *name, int pp, int vnum, void (*f)())
+	{
+		TCB tcb;
+		tcb.task_name = name;
+		tcb.p = pp;
+		tcb.v_number = vnum;
+		tcb.fun = f;
+		return tcb;
+	}
+
+	//主任务
+	int main()
+	{
+		char name_buf[10];
+		int t, i;
+		
+		//定义TCB数组大小
+		TCB tcbTbl[3];
+		
+		//创建task
+		tcbTbl[0] = GreatTCB("task1", 2, 1, Task1);
+		tcbTbl[1] = GreatTCB("task2", 3, 4, Task2);
+		tcbTbl[2] = GreatTCB("task3", 4, 4, Task3);
+		
+		printf("Input task name: ");
+		gets(name_buf);
+		
+		t = 0;
+		//seek 
+		for (i=0; i<3; i++)
+		{
+			if (strcmp(tcbTbl[i].task_name, name_buf) == 0)
+			{
+				tcbTbl[i].fun();
+				t = 1;
+			}
+		
+			if (i == 2 && t == 0)
+				printf("No %s\n", name_buf);
+		}
+		return 0;
+	}
+```
+
+##2. 控制块链表
+为了方便管理和组织程序控制块,一版在TCB中再定义两个指针,一个前指针, 一个后指针,用于把TCB组织起来,方便管理; 并且当程序控制块数组过大时,还会单独定义一个数组,数组的各个元素分别按照顺序指向程序控制块链表,这样做的目的是为了提高程序运行速度,因为链表查询很耗时.  
