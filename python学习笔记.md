@@ -80,10 +80,20 @@ assert断言语句:
 > |列表| list| [1,2,4,5]|    
 > |元组| tuple| ('d', 300)|    
 > |字典| dirt| {'name':'coco','country':'china'}|    
+#8.正则表达式基础
+##1. 概括
+正则表达式并不是Python的一部分。正则表达式是用于处理字符串的强大工具，拥有自己独特的语法以及一个独立的处理引擎，效率上可能不如str自带的方法，但功能十分强大。得益于这一点，在提供了正则表达式的语言里，正则表达式的语法都是一样的，区别只在于不同的编程语言实现支持的语法数量不同；但不用担心，不被支持的语法通常是不常用的部分。如果已经在其他语言里使用过正则表达式，只需要简单看一看就可以上手了。  
+下图展示了使用正则表达式进行匹配的流程： 
+![正则表达式进行匹配的流程](http://i.imgur.com/TODPgaj.png)    
+正则表达式的大致匹配过程是：依次拿出表达式和文本中的字符比较，如果每一个字符都能匹配，则匹配成功；一旦有匹配不成功的字符则匹配失败。如果表达式中有量词或边界，这个过程会稍微有一些不同，但也是很好理解的.  
+下图列出了Python支持的正则表达式元字符和语法:  
+![Python支持的正则表达式元字符和语法](http://i.imgur.com/8Z62S3E.png)  
+详细参考[http://www.cnblogs.com/huxi/archive/2010/07/04/1771073.html](http://www.cnblogs.com/huxi/archive/2010/07/04/1771073.html "正则表达式基础")  
 
-#8.pygame
+
+#9.pygame
 开发游戏软件很不错的库
-#9.scrapy
+#10.scrapy
 scrapy 是一个 python 下面功能丰富、使用快捷方便的爬虫框架。用 scrapy 可以快速的开发一个简单的爬虫.  
 ![scrapy例子](http://i.imgur.com/JmZx6dV.jpg)  
 快速入门可以参考《Scrapy 从这里开始：Hello Scrapy》.  
@@ -92,3 +102,11 @@ scrapy 是一个 python 下面功能丰富、使用快捷方便的爬虫框架�
 入门教程:[http://www.cnblogs.com/txw1958/archive/2012/07/16/scrapy-tutorial.html](http://www.cnblogs.com/txw1958/archive/2012/07/16/scrapy-tutorial.html "scrapy入门教程")  
 ####注:scrapy当前还不支持python3.x 因此可以安装Python2.7.6.  
 2016/7/4 16:56:06 
+
+#11. 学习python的网站
+[http://www.zhihu.com/question/20702054](http://www.zhihu.com/question/20702054 "知乎")  
+[http://geek.csdn.net/forum/68](http://geek.csdn.net/forum/68 "Python开发者")  
+[http://www.runoob.com/](http://www.runoob.com/ "菜鸟教程")  
+[http://www.iplaypython.com/](http://www.iplaypython.com/ "玩蛇网")  
+[http://www.kuqin.com/abyteofpython_cn/](http://www.kuqin.com/abyteofpython_cn/ "简明 Python 教程")  
+[http://www.kuqin.com/docs/diveintopythonzh-cn-5.4b/html/toc/](http://www.kuqin.com/docs/diveintopythonzh-cn-5.4b/html/toc/ "dive into python")  
