@@ -110,3 +110,6 @@ scrapy 是一个 python 下面功能丰富、使用快捷方便的爬虫框架�
 [http://www.iplaypython.com/](http://www.iplaypython.com/ "玩蛇网")  
 [http://www.kuqin.com/abyteofpython_cn/](http://www.kuqin.com/abyteofpython_cn/ "简明 Python 教程")  
 [http://www.kuqin.com/docs/diveintopythonzh-cn-5.4b/html/toc/](http://www.kuqin.com/docs/diveintopythonzh-cn-5.4b/html/toc/ "dive into python")  
+
+#12. python实战
+[https://my.oschina.net/zhangdapeng89/blog/53910?p=1]
