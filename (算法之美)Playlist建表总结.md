@@ -35,3 +35,11 @@
 作者排序需要使用`AlbumIndexList[8k]`和`SameObjList[8K]`，再加上自己的`ArtistIndexList[8K]`和`TmpIndexList[8K]`排序能使用的空间为72K。当然他也需要一个`ArtistSameObjList[8K]`来记录相同作者的专辑。
 **4. 风格排序**
 风格排序需要使用`GenreIndexList[8k]`,`ArtistIndexList[8K]`,`TmpIndexList[8K]`,`AlbumSameObjList[8K]`,`ArtistSameObjList[8K]`五个表来记录和生成列表，占用40K空间，能用来排序的空间有56K。
+
+
+
+
+
+
+
+
