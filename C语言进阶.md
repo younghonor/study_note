@@ -1,4 +1,4 @@
-![C](http://i.imgur.com/kvDV6sE.jpg)
+![C](./res/kvDV6sE.jpg)
 #C Language 进阶 
 #1.非局部跳转语句---setjmp和longjmp函数
 特点  
@@ -122,31 +122,29 @@ inline关键字用来定义一个类的内联函数，引入它的主要原因�
 1.在类中定义这种函数：
 
 ```c
-
-	class ClassName{
-		....
-		//如果在类中直接定义，不需要用inline修饰,编译器自动化为内联函数
-		INT GetWidth(){return m_lPicWidth;};//此说法在《C++ Primer》中提及
-		....
-	}
+class ClassName{
+	....
+	//如果在类中直接定义，不需要用inline修饰,编译器自动化为内联函数
+	INT GetWidth(){return m_lPicWidth;};//此说法在《C++ Primer》中提及
+	....
+}
 ```
 
 2.在类外定义前加inline关键字:
 
 ```c
-
-	class Account {
-	public:
-		Account(double initial_balance) { balance = initial_balance; } //与1相同
-		double GetBalance(); //在类中声明
-		double Deposit(double Amount);
-		double Withdraw(double Amount);
-	private:
-		double balance;
-	};
-	inline double Account::GetBalance() { return balance; } //在类外定义时添加inline关键字
-	inline double Account::Deposit(double Amount) { return ( balance += Amount ); }
-	inline double Account::Withdraw(double Amount) { return ( balance -= Amount ); }
+class Account {
+public:
+	Account(double initial_balance) { balance = initial_balance; } //与1相同
+	double GetBalance(); //在类中声明
+	double Deposit(double Amount);
+	double Withdraw(double Amount);
+private:
+	double balance;
+};
+inline double Account::GetBalance() { return balance; } //在类外定义时添加inline关键字
+inline double Account::Deposit(double Amount) { return ( balance += Amount ); }
+inline double Account::Withdraw(double Amount) { return ( balance -= Amount ); }
 ```
 
 **注意**
@@ -155,24 +153,23 @@ inline关键字用来定义一个类的内联函数，引入它的主要原因�
 
 ```cpp
 
-	//SomeInline.h中
-	#ifndef SOMEINLINE_H
-	#define SOMEINLINE_H
-	inline Type Example(void);
-	//........其他函数的声明
-	#include“SomeInlie.cpp” //源文件后缀名随编译器而定
-	#endif
+//SomeInline.h中
+#ifndef SOMEINLINE_H
+#define SOMEINLINE_H
+inline Type Example(void);
+//........其他函数的声明
+#include“SomeInlie.cpp” //源文件后缀名随编译器而定
+#endif
 ```
 
 ```cpp
-
-	//SomeInline.cpp中
-	#include"SomeInline.h"
-	Type Example(void)
-	{
-		//..........
-	}
-	//...............其他函数的定义
+//SomeInline.cpp中
+#include"SomeInline.h"
+Type Example(void)
+{
+	//..........
+}
+//...............其他函数的定义
 ```
 
 以上方法是通用、有效的，可放心使用，不必担心在头文件包含CPP文件会导致编译错误。
@@ -180,7 +177,7 @@ inline关键字用来定义一个类的内联函数，引入它的主要原因�
 
 linux内核和其他一些开源的代码中，经常会遇到这样的代码：
 
-```
+```c
 do{
  ...
 }while(0)
@@ -199,26 +196,26 @@ do{
 
 ```c
 
-	#define DOSOMETHING()\
-               		foo1();\
-               		foo2();
+#define DOSOMETHING()\
+				foo1();\
+				foo2();
 ```
 
 这个宏的本意是，当调用DOSOMETHING()时，函数foo1()和foo2()都会被调用。但是如果你在调用的时候这么写：
 
 ```c
 
-	if(a>0)
-    	DOSOMETHING();
+if(a>0)
+	DOSOMETHING();
 ```
 
 因为宏在预处理的时候会直接被展开，你实际上写的代码是这个样子的：
 
 ```c
 
-	if(a>0)
-    	foo1();
-	foo2();
+if(a>0)
+	foo1();
+foo2();
 ```
 
 这就出现了问题，因为无论a是否大于0，foo2()都会被执行，导致程序出错。  
@@ -228,27 +225,27 @@ do{
 
 ```c
 
-	if(a>0)
-	{
-    	foo1();
-    	foo2();
-	};
+if(a>0)
+{
+	foo1();
+	foo2();
+};
 ```
 
 这样甚至不会编译通过。所以，很多人才采用了do{...}while(0);
 
 ```c
 
-	#define DOSOMETHING() \
-        		do{ \
-          			foo1();\
-          			foo2();\
-        		}while(0)\
-    
+#define DOSOMETHING() \
+			do{ \
+				foo1();\
+				foo2();\
+			}while(0)\
+
 	...
  
-	if(a>0)
-    	DOSOMETHING();
+if(a>0)
+	DOSOMETHING();
 ```
 
 这样，宏被展开后，才会保留初始的语义。  
@@ -257,10 +254,10 @@ GCC提供了Statement-Expressions用以替代do{...}while(0)  ;
 
 ```c
 
-	#define DOSOMETHING() ({\
-        			foo1(); \
-        			foo2(); \
-	})
+#define DOSOMETHING() ({\
+				foo1(); \
+				foo2(); \
+})
 ```
 
 ##2. 避免使用goto对程序流进行统一的控制
@@ -269,26 +266,26 @@ GCC提供了Statement-Expressions用以替代do{...}while(0)  ;
 
 ```c
 
-	int foo()
+int foo()
+{
+	somestruct* ptr = malloc(...);
+
+	dosomething...;
+	if(error)
 	{
-    	somestruct* ptr = malloc(...);
- 	
-    	dosomething...;
-    	if(error)
-    	{
-    	    goto END;
-    	}
- 
-    	dosomething...;
-    	if(error)
-    	{
-    	    goto END;
-    	}
-    	dosomething...;
- 
-	END:
-    	free(ptr);
-    	return 0;
+		goto END;
+	}
+
+	dosomething...;
+	if(error)
+	{
+		goto END;
+	}
+	dosomething...;
+
+END:
+	free(ptr);
+	return 0;
  
 }
 ```
@@ -297,29 +294,28 @@ GCC提供了Statement-Expressions用以替代do{...}while(0)  ;
 
 ```c
 
-	int foo()
-	{
- 
-  	  somestruct* ptr = malloc(...);
- 	
- 	   	do{
- 	       	dosomething...;
- 	       	if(error)
- 	       	{
-	        	break;
- 	       	}
- 
-        	dosomething...;
-        	if(error)
-        	{
-            	break;
-        	}
-        	dosomething...;
-    	}while(0);
- 
-    	free(ptr);
-    	return 0;
-	}
+int foo()
+{
+	somestruct* ptr = malloc(...);
+
+	do{
+		dosomething...;
+		if(error)
+		{
+			break;
+		}
+
+		dosomething...;
+		if(error)
+		{
+			break;
+		}
+		dosomething...;
+	}while(0);
+
+	free(ptr);
+	return 0;
+}
 ```
 
 这里将函数主体使用do()while(0)包含起来，使用break来代替goto，后续的处理工作在while之后，就能够达到同样的效果。
@@ -331,7 +327,7 @@ GCC提供了Statement-Expressions用以替代do{...}while(0)  ;
 内核中由于不同架构的限制，很多时候会用到空宏，在编译的时候，空宏会给出warning，为了避免这样的warning，就可以使用do{}while(0)来定义空宏：
 
 ```c
-	#define EMPTYMICRO do{}while(0)
+#define EMPTYMICRO do{}while(0)
 ```
 
 ##4. 定义一个单独的函数块来实现复杂的操作：
@@ -347,94 +343,94 @@ GCC提供了Statement-Expressions用以替代do{...}while(0)  ;
 
 ```c
 
-	typedef struct tcb{
-		char * tast_name; //任务名字
-		int    p; //任务重要级别
-		int    v_number; //版本号
-		void (*fun)(void); //指向存储任务代码空间地址
-	}TCB;
+typedef struct tcb{
+	char * tast_name; //任务名字
+	int    p; //任务重要级别
+	int    v_number; //版本号
+	void (*fun)(void); //指向存储任务代码空间地址
+}TCB;
 ```
 
 操作系统可以通过这个结构体控制与之相关联的代码,因此把这种结构叫做程序控制块.  
 例子:  
 ```c
 
-	#include <stdio.h>
-	#include <string.h>
+#include <stdio.h>
+#include <string.h>
 
-	//TCB定义
-	typedef struct tcb{
-		char * task_name; //任务名字
-		int    p; //任务重要级别
-		int    v_number; //版本号
-		void (*fun)(void); //指向存储任务代码空间地址
-	}TCB;
+//TCB定义
+typedef struct tcb{
+	char * task_name; //任务名字
+	int    p; //任务重要级别
+	int    v_number; //版本号
+	void (*fun)(void); //指向存储任务代码空间地址
+}TCB;
 
-	//任务1
-	void Task1()
-	{
-		int i;
-		for (i=0; i<10; i++)
-			printf("1111111111\n");
-	}
+//任务1
+void Task1()
+{
+	int i;
+	for (i=0; i<10; i++)
+		printf("1111111111\n");
+}
+
+//任务2	
+void Task2()
+{
+	int i;
+	for (i=0; i<10; i++)
+		printf("222222222222\n");
+}
+//任务3	
+void Task3()
+{
+	int i;
+	for (i=0; i<10; i++)
+		printf("3333333333333\n");
+}
+//创建控制块函数
+TCB GreatTCB(char *name, int pp, int vnum, void (*f)())
+{
+	TCB tcb;
+	tcb.task_name = name;
+	tcb.p = pp;
+	tcb.v_number = vnum;
+	tcb.fun = f;
+	return tcb;
+}
+
+//主任务
+int main()
+{
+	char name_buf[10];
+	int t, i;
 	
-	//任务2	
-	void Task2()
+	//定义TCB数组大小
+	TCB tcbTbl[3];
+	
+	//创建task
+	tcbTbl[0] = GreatTCB("task1", 2, 1, Task1);
+	tcbTbl[1] = GreatTCB("task2", 3, 4, Task2);
+	tcbTbl[2] = GreatTCB("task3", 4, 4, Task3);
+	
+	printf("Input task name: ");
+	gets(name_buf);
+	
+	t = 0;
+	//seek 
+	for (i=0; i<3; i++)
 	{
-		int i;
-		for (i=0; i<10; i++)
-			printf("222222222222\n");
-	}
-	//任务3	
-	void Task3()
-	{
-		int i;
-		for (i=0; i<10; i++)
-			printf("3333333333333\n");
-	}
-	//创建控制块函数
-	TCB GreatTCB(char *name, int pp, int vnum, void (*f)())
-	{
-		TCB tcb;
-		tcb.task_name = name;
-		tcb.p = pp;
-		tcb.v_number = vnum;
-		tcb.fun = f;
-		return tcb;
-	}
-
-	//主任务
-	int main()
-	{
-		char name_buf[10];
-		int t, i;
-		
-		//定义TCB数组大小
-		TCB tcbTbl[3];
-		
-		//创建task
-		tcbTbl[0] = GreatTCB("task1", 2, 1, Task1);
-		tcbTbl[1] = GreatTCB("task2", 3, 4, Task2);
-		tcbTbl[2] = GreatTCB("task3", 4, 4, Task3);
-		
-		printf("Input task name: ");
-		gets(name_buf);
-		
-		t = 0;
-		//seek 
-		for (i=0; i<3; i++)
+		if (strcmp(tcbTbl[i].task_name, name_buf) == 0)
 		{
-			if (strcmp(tcbTbl[i].task_name, name_buf) == 0)
-			{
-				tcbTbl[i].fun();
-				t = 1;
-			}
-		
-			if (i == 2 && t == 0)
-				printf("No %s\n", name_buf);
+			tcbTbl[i].fun();
+			t = 1;
 		}
-		return 0;
+	
+		if (i == 2 && t == 0)
+			printf("No %s\n", name_buf);
 	}
+	return 0;
+}
 ```
 
 ##2. 控制块链表
@@ -456,20 +452,20 @@ GCC提供了Statement-Expressions用以替代do{...}while(0)  ;
 ~（0u） 是全1；  
 常与1做位运算，来得到想要的数；
 通过宏来置位，复位。
-```
+```c
 #define SET_NTH_BIT(x,n) (x|((1U)<<(n-1)));
 #define CLEAR_NTH_BIT(x,n) (x & ~((1U)<<(n-1)));
 ```
 #8. 宏offsetof和宏container_of
 ##1. offsetof宏
-```
+```c
 #define offsetof(TYPE, MEMBER) ((int) &((TYPE *)0)->MEMBER) 
 ```
 作用：用宏来计算结构体中某一个元素相对结构体首地址的偏移量；  
 原理：虚拟一个type类型的结构体，然后用type.member的方式来访问那个member元素，继而得到member相对整个变量首地址的偏移量；  
 思路：```（TYPE *）0```是一个强制类型转换，把0地址强制转换成一个指针，这个指针指向一个TYPE类型的结构体变量(实际上这个结构体变量可能不存在，但是只要我们不去引用这个指针就不会出错)。  
 ##2. container_of宏
-```
+```c
 #container_of(ptr,type,member) ({\
 		const typeof(((type *)0)->member) *__mptr=(ptr);\
 		(TYPE*)((char*)__mptr-offsetof(type,member));})

@@ -1,4 +1,4 @@
-![ruby](http://i.imgur.com/YyupAwF.jpg)
+![ruby](./res/YyupAwF.jpg)
 #Ruby入门到精通
 
 ##Ruby环境的搭建(windows)
@@ -34,21 +34,21 @@
     默认情况下，所有的方法都是 public ，除了 initialize 之外，它始终是一个 private 的方法。  
 
 ```ruby  
-	#类
-	class ClassName  
-		def   
-		end  
+#类
+class ClassName  
+	def   
 	end  
+end  
+
+#类的继承   
+class People   
+end  
+class Male < People  
+end 
 	
-	#类的继承   
-	class People   
-	end  
-	class Male < People  
-	end 
-	 
-	#模块的定义
-	module moduleName  
-	end  
+#模块的定义
+module moduleName  
+end  
 ```   
     
 	1. ruby中，你可以向已有类库中添加方法.  
@@ -69,40 +69,39 @@
 6. Ruby程序行结尾
 	Ruby解释一个语句中以分号和换行符表示结束。但是，如果Ruby遇到运算符，如+，- 或反斜杠结尾的行，则表示语句继续.
 7. Ruby保留字  
-	![ruby保留字](http://i.imgur.com/MYdgEt6.jpg)    
+	![ruby保留字](./res/MYdgEt6.jpg)    
 8. Ruby中heredoc  
 	"Here Document" 是指建立多行字符串。继<<可以指定一个字符串或者一个标识符来终止字符串字面，当前行之后的所有行的终止符字符串的值.  
 	如果终止符是引用，引号的类型决定面向行的字符串常量的类型。注意<<终止符之间不能有空格.
 
 ```ruby    
-	print <<EOF     
-    This is the first way of creating    
-    here document ie. multiple line string.    
-	EOF    
+print <<EOF     
+This is the first way of creating    
+here document ie. multiple line string.    
+EOF    
 ```  
 
 9. Ruby BEGIN/END 语句   
 	声明代码在程序运行之前被调用.  
 
 ```ruby  
-	BEGIN {
-   		code
-	}
+BEGIN {
+	code
+}
 ```
-
 	声明代码被称为程序的结束. 
-
 ```ruby  
-	END {
-   		code
-	}
+END {
+	code
+}
 ```
 
 10. Ruby文件的一般开头格式  
 
-	> 	#! /usr/bin/ruby -w   
-	> 	# -*- coding: UTF-8 -*-  
-
+```ruby 
+#! /usr/bin/ruby -w   
+# -*- coding: UTF-8 -*-  
+```
 11. Ruby运算符  
 	1. 操作运算符 +、-、*、/、%、**(乘方)  
 	2. 比较运算符 >=、<=、==、<>、===  
@@ -120,26 +119,26 @@
  	1. 条件语句  
 
 ```ruby   
-	if condition then...    
-	elsif condition then...    
-	else...    
-	end      
+if condition then...    
+elsif condition then...    
+else...    
+end      
 ```  
 
 ```ruby       
-	unless condition then...    
-	else...    
-	end      
+unless condition then...    
+else...    
+end      
 ```  
 
 	2. 分支判断  
 
 ```ruby  
-	case condition  
-	when value1 then...  
-	when value2 then...   
-	else...  
-	end  
+case condition  
+when value1 then...  
+when value2 then...   
+else...  
+end  
 ```
 
 	3. 循环控制  
@@ -148,26 +147,22 @@
 	Ruby中提供了for、while、until三个循环控制语句，each、times、loop三个循环控制方法，我们可以根据需要选择不同的方式.Ruby同时提供了三个循环控制的语句，包括：break、next、redo.  
 
 ```ruby    
-	while condition do...  
-	end
+while condition do...  
+end
 ```  
-	
 ```ruby    
-	for var in object do...  
-	end
+for var in object do...  
+end
 ```  
-
 ```ruby    
-	until condition do...  
-	end
+until condition do...  
+end
 ```  
-
 ```ruby    
-	obj.each{|var|, block}  
+obj.each{|var|, block}  
 ```  
-	
 ```ruby    
-	loop{...}   
+loop{...}   
 ```  
  15. Ruby中常用的类
 
@@ -180,13 +175,11 @@
 		4. 使用 obj.to_a 方法，将对象转换为数组。
 		5. 使用split方法，将字符串分割为数组。
 
-
 	3. String类  
 		String的创建方式有:  
 		1. 直接使用"或者'新建
      	2. String.new新建
      	3. 使用%Q和%q的方式新建
-
 
 	4. Hash类  
 	5. 正则表达式类（Regexp）  
@@ -200,29 +193,22 @@
 	8. Time、Date、DateTime类  
 	9. Ruby中的进程与线程  
 
-
 16. 错误与例外处理
 
 错误处理的一般形式:  
 
 ```ruby  
-	begine
+begine
+	block
 
-          block
+rescue=> ex #rescue遇到例外时进行错误处理
+	print ex.message
+	block
+ensure #ensure确保不管在什么情况下它下面的代码部分都会执行
+	block
+	retry #retry 重新尝试从 begin 开始的代码
 
-     rescue=> ex #rescue遇到例外时进行错误处理
-
-          print ex.message
-
-          block
-
-     ensure #ensure确保不管在什么情况下它下面的代码部分都会执行
-
-          block
-
-          retry #retry 重新尝试从 begin 开始的代码
-
-     end
+end
 ```
 
 默认情况下 $!返回例外对象，$@返回例外信息.    

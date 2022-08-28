@@ -1,7 +1,7 @@
 ﻿﻿
-
+#Integer ID management机制
 最近研究进程间通信，遇到了idr相关的函数，为了扫清障碍，先研究了linux的idr机制。  
-IDR(integer ID management)的要完成的任务是给要管理的对象分配一个唯一的ID，于是可以通过这个数字找到要管理的对象。  
+IDR(integer ID management)是给要管理的对象分配一个唯一的ID，于是可以通过这个数字找到要管理的对象。  
 
 应用IDR机制时要包含头文件<linux/idr.h>。
 ```c
@@ -42,7 +42,6 @@ idr中的top指向的是当前正在工作的最高层的idr_layer，即图中�
 ```c
 static void idr_mark_full(struct idr_layer **pa, int id)
 {
-
 	struct idr_layer *p = pa[0];
 	int l = 0;
 
@@ -62,9 +61,7 @@ static void idr_mark_full(struct idr_layer **pa, int id)
 		id = id >> IDR_BITS;
 
 		__set_bit((id & IDR_MASK), &p->bitmap); //如果由于本层满了，则上一层对应位置1.
-                                                              
 	} //循环检测。
-
 }
 
 ```
@@ -75,7 +72,6 @@ static void idr_mark_full(struct idr_layer **pa, int id)
 ```c
 static struct idr_layer *alloc_layer(struct idr *idp)
 {
-
 	struct idr_layer *p;
 	unsigned long flags;
 
@@ -91,11 +87,10 @@ static struct idr_layer *alloc_layer(struct idr *idp)
 	spin_unlock_irqrestore(&idp->lock, flags);
 
 	return(p);  // 返回D
-
 }
 ```
 有个问题是预备役是怎么来的?如果预备役分配光了怎么办。分配光了也没有关系，还好我们有idr_pre_get函数。
-```
+```c
 #if BITS_PER_LONG == 32
 #define IDR_BITS 5
 #define MAX_ID_SHIFT (sizeof(int)*8 - 1)               //31
@@ -104,10 +99,9 @@ static struct idr_layer *alloc_layer(struct idr *idp)
 ```
 坦白说，MAX_LEVEL的含义是什么，我并不清楚。为什么一次分配14个idr_layer充当预备役我并不清楚。请清楚的兄弟不吝赐教。  
 这个函数的含义就是我要分配14个idr_layer，充当预备役。如果中间分配失败，那么能分配几个算几个。投入预备役的函数是free_layer。比较好懂我就不解释了。
-```
+```c
 int idr_pre_get(struct idr *idp, gfp_t gfp_mask)
 {
-
 	while (idp->id_free_cnt < IDR_FREE_MAX) {
 
 		struct idr_layer *new;
@@ -122,10 +116,9 @@ int idr_pre_get(struct idr *idp, gfp_t gfp_mask)
 	return 1;
 }
 ```
-```
+```c
 static void free_layer(struct idr *idp, struct idr_layer *p)
 {
-
 	unsigned long flags;
 
 	/*
@@ -139,10 +132,9 @@ static void free_layer(struct idr *idp, struct idr_layer *p)
 	spin_unlock_irqrestore(&idp->lock, flags);
 }
 ```
-```
+```c
 static void __free_layer(struct idr *idp, struct idr_layer *p)
 {
-
 	p->ary[0] = idp->id_free;
 	idp->id_free = p; 
 	idp->id_free_cnt++; 
@@ -156,17 +148,18 @@ idr_layer投入使用，用在top为根管理结构中。
 函数返回-EAGAIN，告诉我们，预备役全部阵亡，于是，我们从-EAGAIN的遗言中，知道，我们需要调用
 idr_pre_get来充实预备役了。         
 
-```
-again: if (idr_pre_get(&my_idr, GFP_KERNEL) == 0) {
+```c
+again: 
+if (idr_pre_get(&my_idr, GFP_KERNEL) == 0) {
 	/* No memory, give up entirely */ 
 } 
-	spin_lock(&my_lock); 
-	result = idr_get_new(&my_idr, &target, &id); 
-	if (result == -EAGAIN) { 
-		sigh(); 
-		spin_unlock(&my_lock);
-		goto again;
-	}
+spin_lock(&my_lock); 
+result = idr_get_new(&my_idr, &target, &id); 
+if (result == -EAGAIN) { 
+	sigh(); 
+	spin_unlock(&my_lock);
+	goto again;
+}
 
 ```
 
@@ -185,7 +178,7 @@ again: if (idr_pre_get(&my_idr, GFP_KERNEL) == 0) {
 同样我们可以求ID是27对应的obj  27=0*32+27，所以top->ary[0]->ary[27]指向obj。
 
 **小结:**通过上面的描述，我们也看到了，我们就是要建立一个32叉树，来管理obj。通过ID，可以一层层定位到叶子层，叶子层的指针指向的就是我们要管理的obj。 需要指出的是32叉树，不一定每个分支都分配好了idr_layer，用到了再分配，防止浪费，比如示意图中，并没有用到32~63，我们看到top->ary[1]为NULL。如有需要分配34了，那没办法，会在分配过程中分配个idr_layer,top->ary[1]指向分配的idr_layer。
-```
+```c
 void *idr_find(struct idr *idp, int id)
 {
 	int n;
@@ -208,10 +201,10 @@ void *idr_find(struct idr *idp, int id)
 ```
 下面分析如果给一个obj分配个ID。
 提供两个函数给obj分配ID
-
+```c
 	int idr_get_new(struct idr *idp, void *ptr, int *id)
 	int idr_get_new_above(struct idr *idp, void *ptr, int starting_id, int *id)
-
+```
 参数说明：
 
 	idp---不说了，管理结构idr的指针，对应示意图中最左面的那个结构。
@@ -222,11 +215,11 @@ void *idr_find(struct idr *idp, int id)
 两个函数都是调用了idr_get_new_above_int，区别是idr_get_new将starting_id填成了0.表示随便给分配个大于0的没被别人用的id就行。
 -EAGAIN的意思上面一讲提到过，这个是预备役全体阵亡的遗言，没有空闲的idr_layer用来分配了，所以失败了，如果用户非常需要给ptr分配个id，那么请先分配点预备役，即调用idr_pre_get。
 -ENOSPC的含义是你小子要的id太大了，超过了MAX_ID_BIT，即2^31，idr说，我是管理小数字的结构，拜托不要那这么大的数字骚扰我。
-```
+```c
 if ((id >= MAX_ID_BIT) || (id < 0))
 	return -3;           //  sub_alloc函数中的语句
 ```
-```
+```c
 int idr_get_new(struct idr *idp, void *ptr, int *id)
 {
 	int rv;
@@ -247,12 +240,11 @@ int idr_get_new(struct idr *idp, void *ptr, int *id)
 	return 0;
 }
 ```
----------------------------------------------------------------------------------------
 
 酝酿了半天，可以聊聊idr_get_new_above_int这个了。
 
 idr_get_empty_slot函数是分配个大于starting_id的数字作为ptr的ID。如果分配成功，id>=0,将叶子节点id对应的ary数组的元素赋值为 ptr。同时将叶子层的count++，表示又分配出去一个。将叶子层的位图bitmap对应槽位置1的工作是idr_mark_full完成。如果叶子层全满了，则通知叶子层的父亲对应槽位置1，依次传递。
-```
+```c
 static int idr_get_new_above_int(struct idr *idp, void *ptr, int starting_id)
 {
 
@@ -275,7 +267,7 @@ static int idr_get_new_above_int(struct idr *idp, void *ptr, int starting_id)
 ```
 OK，到了idr_get_empty_slot。这个函数是干重活的函数。需要仔细研读代码。这个函数不举例子很难描述清楚，举例子又显得特别琐碎，很头疼。建议读者从0开始分配一直分配到32需要分层，就可以理解代码的含义。
 先讲初始化：
-```
+```c
 #define IDR_INIT(name)                        \
 {                                \
 	.top        = NULL,                    \
@@ -286,17 +278,17 @@ OK，到了idr_get_empty_slot。这个函数是干重活的函数。需要仔细
 }    
 ```
 top等于NULL 表示我的32叉树还没建立起来，id_free =NULL，id_free_cnt=0表示不好意思，我的预备役也为空，没法为您分配idr_layer。这是最初的状态，32叉树连个根都没有，整个idr处于一穷二白的状态。
-```
-	p = idp->top;
-    layers = idp->layers;
+```c
+p = idp->top;
+layers = idp->layers;
 
-    if (unlikely(!p)) {
+if (unlikely(!p)) {
 
-    	if (!(p = alloc_layer(idp)))
-			return -1;
-		layers = 1;
+	if (!(p = alloc_layer(idp)))
+		return -1;
+	layers = 1;
 
-    }
+}
 ```
 idr_get_empty_slot这个部分，表示如果ｉｄｒ的３２叉树连个根都没有，我需要分配一个idr_layer来当根。如果alloc_layer失败，表示预备役空了，惨了，只能返回失败，告诉调用者，预备役没了，请填充预备役。一般是可以分配的。
 
@@ -305,49 +297,45 @@ idr_get_empty_slot这个部分，表示如果ｉｄｒ的３２叉树连个根�
 以上面的示意图为例，我们当前有两层结构，最多能管理32*32=1K个，我们能分配的最大id就是1023，如果用户要求我们分配大于等于1500的id，那么我们目前的两层结构是无法满足需要的，所以我们需要加一层。首先将layer++，表示我们的32叉树升级了，多了一层，从预备役分配出一个idr_layer，让新分配的new当根。p指针指向根。
 
 如果分配的id不够大，不需要分层，那么这个while就不执行了，直接跳到sub_alloc函数。
-```
-	while ((layers < (MAX_LEVEL - 1)) && (id >= (1 << (layers*IDR_BITS)))) {
-		
-		layers++;
-		if (!p->count)//这个地方是应对特殊情况，比如0~31都没有分配，第一层还没有，用户                             
-						//上来要分配32或46这样明显是两层才能完成的结构
-			continue; 
+```c
+while ((layers < (MAX_LEVEL - 1)) && (id >= (1 << (layers*IDR_BITS)))) {
+	
+	layers++;
+	if (!p->count)//这个地方是应对特殊情况，比如0~31都没有分配，第一层还没有，用户                             
+		continue; //上来要分配32或46这样明显是两层才能完成的结构
 
-        if (!(new = alloc_layer(idp))) {
+	if (!(new = alloc_layer(idp))) {
+		/*
+		* The allocation failed.  If we built part of
+		* the structure tear it down.
+		*/
+		spin_lock_irqsave(&idp->lock, flags);
+		for (new = p; p && p != idp->top; new = p) {
 
-        	/*
-             * The allocation failed.  If we built part of
-             * the structure tear it down.
-             */
-
-            spin_lock_irqsave(&idp->lock, flags);
-			for (new = p; p && p != idp->top; new = p) {
-
-				p = p->ary[0];
-				new->ary[0] = NULL;
-				new->bitmap = new->count = 0;
-				__free_layer(idp, new);
-			}
-
-			spin_unlock_irqrestore(&idp->lock, flags);
-			return -1;
-
+			p = p->ary[0];
+			new->ary[0] = NULL;
+			new->bitmap = new->count = 0;
+			__free_layer(idp, new);
 		}
 
-		new->ary[0] = p;
-		new->count = 1;
-		if (p->bitmap == IDR_FULL)
-		__set_bit(0, &new->bitmap);
-		p = new;
+		spin_unlock_irqrestore(&idp->lock, flags);
+		return -1;
+
 	}
 
-	idp->top = p;
-	idp->layers = layers;
-	v = sub_alloc(idp, &id, pa);
-	if (v == -2)
-		goto build_up;
+	new->ary[0] = p;
+	new->count = 1;
+	if (p->bitmap == IDR_FULL)
+	__set_bit(0, &new->bitmap);
+	p = new;
+}
+
+idp->top = p;
+idp->layers = layers;
+v = sub_alloc(idp, &id, pa);
+if (v == -2)
+	goto build_up;
 ```
-------------------------------------------------------------------------------------------
 
 sub_alloc函数。
 
@@ -361,7 +349,7 @@ sub_alloc函数。
 2. 不按常理出牌，乱分配，假如我第一个就要分配 大于37的，第二次就要分配大于1500的，之类的，
 在走一遍流程，就可以理解相关的代码。  
 
-```
+```c
 while (1) {
 	/*
 	 * We run around this while until we reach the leaf node...

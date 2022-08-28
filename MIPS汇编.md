@@ -1,4 +1,4 @@
-![mips](http://i.imgur.com/oSmmt1X.jpg)
+![mips](./res/oSmmt1X.jpg)
 #MIPS汇编
 
 ##MIPS指令集

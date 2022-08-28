@@ -1,4 +1,4 @@
-![bluetooth](http://i.imgur.com/QRDS3EC.jpg)
+![bluetooth](./res/QRDS3EC.jpg)
 ###1.BLUETOOTH基本了解
 1. BLUETOOTH出自丹麦  
 2. Bluetooth SIG 蓝牙技术联盟,非盈利组织.主要任务是发布蓝牙规格、管理资格认证程序、保护蓝牙商标及宣传蓝牙无线技术.
@@ -25,7 +25,7 @@
 6. 蓝牙版本
 	1. 最新4.1版本为Bluetooth Low Energy(BLE)超低功耗,可用于可穿戴设备.
 ###2.BOOTH核心协议了解
-![蓝牙协议框图](http://i.imgur.com/PJRZfZm.jpg)  
+![蓝牙协议框图](./res/PJRZfZm.jpg)  
 按照各层协议在整个蓝牙协议体系中所处的位置，蓝牙协议可分为底层协议、中间层协议和高层协议三大类。    
 	1. 蓝牙底层协议实现蓝牙信息数据流的传输链路,是蓝牙协议体系的基础,它包括射频协议(RFP)、基带协议(Baseband)和链路管理协议(LMP)。  
 	2. 蓝牙中间层协议完成数据帧的分解与重组、服务质量控制、组提取等功能,为上层应用提供服务,并提供与底层协议的接口,此部分包括主机控制器接口协议(HCI)、逻辑链路控制与适配协议(L2CAP)、串口仿真协议(RFCOMM)、电话控制协议(TCS)和服务发现协议(SDP)。  
@@ -38,10 +38,10 @@
 	3. 电话传送控制协议：TCS二进制，AT命令集  
 	4. 应用协议：PPP、UDP/TCP/IP、OBEX、WAP、vCard、vCal、WAE  
 	5. 传统蓝牙与BLE对比分析见下表:  
-![传统蓝牙与BLE对比分析图](http://i.imgur.com/na3KYlT.jpg)  
+![传统蓝牙与BLE对比分析图](./res/na3KYlT.jpg)  
 6. 蓝牙组网方式
 	
-![蓝牙组网方式](http://i.imgur.com/bWgVgKa.jpg)   
+![蓝牙组网方式](./res/bWgVgKa.jpg)   
 
 	
 1. **微微网（piconet)：  **
@@ -55,7 +55,7 @@
 
 
 ###3.蓝牙模块
-![](http://i.imgur.com/JlKqBji.png)  
+![](./res/JlKqBji.png)  
 1. 蓝牙模块主要分三个层次：蓝牙协议栈，蓝牙管理模块及Profile适配层，蓝牙应用。  
 2. 蓝牙应用分蓝牙前台，蓝牙引擎，中间件和解码模块。  
 3. 蓝牙协议栈将蓝牙的复杂和细节屏蔽起来，通过蓝牙管理模块及Profile适配层，蓝牙应用几乎不用关心蓝牙的技术实现细节，只需要关心应用逻辑本身。
