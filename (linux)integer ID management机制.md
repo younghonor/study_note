@@ -363,7 +363,6 @@ while (1) {
 		oid = id;
 		id = (id | ((1 << (IDR_BITS * l)) - 1)) + 1;
 		/* if already at the top layer, we need to grow */
-
 		if (!(p = pa[l])) {
 			*starting_id = id;
 			return -2;
@@ -371,7 +370,6 @@ while (1) {
 	    /* If we need to go up one layer, continue the
 	     * loop; otherwise, restart from the top.
 	     */
-
 		sh = IDR_BITS * (l + 1);
 		if (oid >> sh == id >> sh)
 			continue;
@@ -388,8 +386,7 @@ while (1) {
 		break;
 	/*
 	 * Create the layer below if it is missing.
-	 */
-	
+	 */	
 	if (!p->ary[m]) {
 		if (!(new = alloc_layer(idp)))
 			return -1;
@@ -397,8 +394,6 @@ while (1) {
 		p->count++;
 	}
 	pa[l--] = p;
-	
-
 	p = p->ary[m];
 } 
 ```
