@@ -2,7 +2,7 @@
 
 转自：http://www.cnblogs.com/QJohnson/archive/2011/06/24/2089414.html
 
-#1、struct inode──字符设备驱动相关的重要结构介绍
+# struct inode──字符设备驱动相关的重要结构介绍
 
 内核中用inode结构表示具体的文件，而用file结构表示打开的文件描述符。Linux2.6.27内核中，inode结构体具体定义如下：  
 
@@ -75,7 +75,7 @@ struct inode {
 	void            *i_private; /* fs or device private pointer */
 };
 ```
-2、struct file ──字符设备驱动相关重要结构
+# struct file ──字符设备驱动相关重要结构
 
 文件结构 代表一个打开的文件描述符，它不是专门给驱动程序使用的，系统中每一个打开的文件在内核中都有一个关联的struct file。它由内核在open时创建，并传递给在文件上操作的任何函数，知道最后关闭。当文件的所有实例都关闭之后，内核释放这个数据结构。  
 ```c
@@ -120,9 +120,9 @@ struct file {
 ```
 ----------------------------------------------------------------------------
 
-##file结构体和inode结构体   
+## file结构体和inode结构体   
 
-1. struct file结构体定义在include/linux/fs.h中定义。文件结构体代表一个打开的文件，系统中的每个打开的文件在内核空间都有一个关联的 struct file。它由内核在打开文件时创建，并传递给在文件上进行操作的任何函数。在文件的所有实例都关闭后，内核释放这个数据结构。在内核创建和驱动源码中，struct file的指针通常被命名为file或filp。如下所示：
++ struct file结构体定义在include/linux/fs.h中定义。文件结构体代表一个打开的文件，系统中的每个打开的文件在内核空间都有一个关联的 struct file。它由内核在打开文件时创建，并传递给在文件上进行操作的任何函数。在文件的所有实例都关闭后，内核释放这个数据结构。在内核创建和驱动源码中，struct file的指针通常被命名为file或filp。如下所示：
 ```c
 struct file {
 	union {
@@ -154,7 +154,7 @@ struct file {
 	struct address_space *f_mapping;
 };
 ```
-2. struct dentry
++ struct dentry
 dentry 的中文名称是目录项，是Linux文件系统中某个索引节点(inode)的链接。这个索引节点可以是文件，也可以是目录。inode（可理解为ext2 inode）对应于物理磁盘上的具体对象，dentry是一个内存实体，其中的d_inode成员指向对应的inode。也就是说，一个inode可以在运行的时候链接多个dentry，而d_count记录了这个链接的数量。    
 ```c
 struct dentry { 
@@ -178,7 +178,7 @@ struct dentry {
 
 }; 
 ```
-3. 索引节点对象由inode结构体表示，定义文件在linux/fs.h中。  
++ 索引节点对象由inode结构体表示，定义文件在linux/fs.h中。  
 ```c
 struct inode { 
 	struct hlist_node       i_hash; 哈希表 

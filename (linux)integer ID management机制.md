@@ -1,5 +1,5 @@
 ﻿﻿
-#Integer ID management机制
+# Integer ID management机制
 最近研究进程间通信，遇到了idr相关的函数，为了扫清障碍，先研究了linux的idr机制。  
 IDR(integer ID management)是给要管理的对象分配一个唯一的ID，于是可以通过这个数字找到要管理的对象。  
 
@@ -177,7 +177,7 @@ if (result == -EAGAIN) {
 用前面的32进制方法理解就是66 = 2*32+2，所以，top->ary[2]->ary[2]指向obj。
 同样我们可以求ID是27对应的obj  27=0*32+27，所以top->ary[0]->ary[27]指向obj。
 
-**小结:**通过上面的描述，我们也看到了，我们就是要建立一个32叉树，来管理obj。通过ID，可以一层层定位到叶子层，叶子层的指针指向的就是我们要管理的obj。 需要指出的是32叉树，不一定每个分支都分配好了idr_layer，用到了再分配，防止浪费，比如示意图中，并没有用到32~63，我们看到top->ary[1]为NULL。如有需要分配34了，那没办法，会在分配过程中分配个idr_layer,top->ary[1]指向分配的idr_layer。
+**小结:** 通过上面的描述，我们也看到了，我们就是要建立一个32叉树，来管理obj。通过ID，可以一层层定位到叶子层，叶子层的指针指向的就是我们要管理的obj。 需要指出的是32叉树，不一定每个分支都分配好了idr_layer，用到了再分配，防止浪费，比如示意图中，并没有用到32~63，我们看到top->ary[1]为NULL。如有需要分配34了，那没办法，会在分配过程中分配个idr_layer,top->ary[1]指向分配的idr_layer。
 ```c
 void *idr_find(struct idr *idp, int id)
 {
@@ -202,14 +202,14 @@ void *idr_find(struct idr *idp, int id)
 下面分析如果给一个obj分配个ID。
 提供两个函数给obj分配ID
 ```c
-	int idr_get_new(struct idr *idp, void *ptr, int *id)
-	int idr_get_new_above(struct idr *idp, void *ptr, int starting_id, int *id)
+int idr_get_new(struct idr *idp, void *ptr, int *id)
+int idr_get_new_above(struct idr *idp, void *ptr, int starting_id, int *id)
 ```
 参数说明：
 
-	idp---不说了，管理结构idr的指针，对应示意图中最左面的那个结构。
-	ptr---指向要管理的结构的指针，我们的任务就是给它分配个小数字，作为他的身份证。成功之后,我们可以拿着这个ID，直接找到ptr。
-	id----输出参数，将分配的数字存入id。
+**idp:** 不说了，管理结构idr的指针，对应示意图中最左面的那个结构。
+**ptr:** 指向要管理的结构的指针，我们的任务就是给它分配个小数字，作为他的身份证。成功之后,我们可以拿着这个ID，直接找到ptr。
+**id:** 输出参数，将分配的数字存入id。
 
 这两个函数其中idr_get_new比较乖，比较好说话，随便给他分配一个没人用的id就可以，他他不挑不捡。第二个函数idr_get_new_above有点难说话，要求挺多，他有个参数starting_id，要求分配不小于starting_id的一个数字作为id。
 两个函数都是调用了idr_get_new_above_int，区别是idr_get_new将starting_id填成了0.表示随便给分配个大于0的没被别人用的id就行。
